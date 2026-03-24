@@ -10,9 +10,11 @@ This is a workflow for process snm3C-seq data using [Yet Another Pipeline](https
 
 ## Usage
 
-1. Move your sequencing reads to `raw_data/`
+1. Clone this repo. You can run `git clone https://github.com/vari-bbc/snm3C-seq.git <path/to/new_folder>`. The cloned folder will be your working directory.
 
-2. Modify the config and samplesheet:
+2. Move your sequencing reads to `raw_data/`. 
+
+3. Modify the config and samplesheet:
   * config/samplesheet/units.tsv
     * **fq1**           - name of read1 fastq
     * **fq2**           - name of read2 fastq
