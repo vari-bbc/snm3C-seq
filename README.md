@@ -23,3 +23,9 @@ This is a workflow for process snm3C-seq data using [Yet Another Pipeline](https
     * **regions**       - either an integer setting bin size or an absolute path to a regions file.
     * **quantifiers**   - space-delimited string setting the quantification type, nucelotide context and cutoff. See documentation for --quantifiers parameter.
 
+4. If your lab has their own nodes on the VAI HPC, add the partition name to line 4 in the SLURM profile (`profile/generic_slurm/config.v9+.yaml`).  For example, you may modifify it to `-p yourlab,long,short \`.
+
+5. Start the workflow by running `sbatch bin/run_snake.slurm`. Monitor the jobs from this workflow by running `squeue -u user.name`.
+
+6. Check the `snake_workflow.e` log file to see if the workflow ran to completion. Run `tail snake_workflow.e`; there should be a line that says 100% completed or something to that effect.
+
