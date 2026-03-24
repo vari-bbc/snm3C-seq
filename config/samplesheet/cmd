@@ -1,1 +1,0 @@
-cat <(printf "sample\tfq1\tfq2\n") <(ls ../../raw_data/*_R1_001.fastq.gz | grep -Po '[^\/]+$' | perl -lne '$r2=$_; $r2=~s:_R1_001.fastq:_R2_001.fastq:; /_(S\d+)_L001_R1/; print qq|$1\t$_\t$r2|') > units.tsv
