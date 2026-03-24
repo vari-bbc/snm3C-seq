@@ -30,6 +30,7 @@ dependencies:
  - biopython
  - cutadapt
  - bismark=0.20
+ - hisat-3n=0.0.3
  - bowtie2
  - bowtie
  - samtools
