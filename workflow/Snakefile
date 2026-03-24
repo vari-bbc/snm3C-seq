@@ -13,12 +13,10 @@ min_version("7.25.0")
 
 configfile: "config/config.yaml"
 
-units = pd.read_table(config["units"], dtype={"sample" : str, "fq1" : str, "fq2" : str})
+units = pd.read_table(config["units"], dtype={"fq1" : str, "fq2" : str})
 if not (units['fq1'].is_unique and units['fq2'].is_unique):
     raise Exception('Same fastq specified in more than one row.')
 
-if not (units['sample'].is_unique):
-    raise Exception('Same sample ID specified in more than one row.')
 
 all_units_fastqs = units['fq1'].tolist() + units['fq2'].tolist()
 all_raw_data_fastqs = [os.path.basename(fn) for fn in glob.glob('raw_data/*.fastq.gz')]
