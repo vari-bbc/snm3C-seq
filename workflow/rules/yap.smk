@@ -23,7 +23,7 @@ checkpoint dmux:
         mem_gb=196,
         log_prefix=lambda wildcards: "_".join(wildcards) if len(wildcards) > 0 else "log"
     conda:
-        "../envs/mapping.yaml"
+        "../envs/cemba_data_env.yaml"
     shell:
         """
         {{
@@ -60,7 +60,7 @@ checkpoint mapping:
         mem_gb=230,
         log_prefix=lambda wildcards: "_".join(wildcards) if len(wildcards) > 0 else "log"
     conda:
-        "../envs/mapping.yaml"
+        "../envs/cemba_data_env.yaml"
     shell:
         """
         {{
@@ -126,7 +126,7 @@ rule generate_mcds:
         mem_gb=480,
         log_prefix=lambda wildcards: "_".join(wildcards) if len(wildcards) > 0 else "log"
     conda:
-        "../envs/mapping.yaml"
+        "../envs/cemba_data_env.yaml"
     shell:
         """
         {{
