@@ -7,4 +7,5 @@ snake_workflow.e
 snake_workflow.o
 fix_config
 .snakemake/
-raw_data
+raw_data/*
+!raw_data/.keep
