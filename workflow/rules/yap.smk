@@ -82,7 +82,7 @@ def get_allc_files(wildcards):
     dmux_dir = "results/dmux"
     dmux_groups = glob_wildcards(os.path.join(dmux_dir, "{i}/Snakefile")).i
 
-    allc_dirs = [checkpoints.mapping.get(dirname=dirname).output['allc'] for dirname in dmux_groups]
+    allc_dirs = [os.path.abspath(checkpoints.mapping.get(dirname=dirname).output['allc']) for dirname in dmux_groups]
     
     out_allc = list()
     for allc_dir in allc_dirs:
@@ -129,10 +129,9 @@ rule generate_mcds:
         mapping_summaries=get_mapping_summaries, # need this to ensure that mapping rule is run first
         allc_files=get_allc_files,
         chrom_sizes_and_regions=get_generate_mcdc_input
-        # chrom_sizes=config['chrom_sizes'],
     output:
         allc_table="results/generate_mcds/allc.table",
-        allc_mcds="results/generate_mcds/allc.mcds"
+        mcds = directory(expand("results/generate_mcds/{region_names}/", region_names = prepare_dataset_config['region_name']))
     log:
         expand("logs/generate_mcds/log.{suff}", suff=['o','e'])
     benchmark:
@@ -165,4 +164,5 @@ rule generate_mcds:
         }} 1> {log[0]} 2> {log[1]}
         
         """
+
 

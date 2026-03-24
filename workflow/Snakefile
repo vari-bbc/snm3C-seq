@@ -42,8 +42,7 @@ if not os.path.exists(tmp_dir):
 
 rule all:
     input:
-        #get_mapping_summaries
-        "results/generate_mcds/allc.mcds"
+        expand("results/generate_mcds/{region_names}/", region_names = prepare_dataset_config['region_name'])
 
 include:
     'rules/yap.smk'
