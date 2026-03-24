@@ -100,6 +100,26 @@ def get_mapping_summaries(wildcards):
     mapping_summaries = expand("results/dmux/{dirname}/MappingSummary.csv.gz", dirname = dmux_groups)
     return mapping_summaries
 
+def get_generate_mcdc_input(wildcards):
+
+    rule_input = [config['chrom_sizes']]
+
+    df = prepare_dataset_config
+
+    for region_name in df['region_name']:
+        file_path = df[df['region_name'] == region_name]['regions'].values[0]
+        if os.path.isfile(file_path):
+            rule_input.append(file_path)
+
+    return rule_input
+
+def get_generate_mcdc_params(wildcards):
+    df = prepare_dataset_config
+
+    rule_params_list = expand("--regions '{config.region_name}' {config.regions} --quantifiers '{config.region_name}' {config.quantifiers} ", config=df.itertuples())
+    rule_params = " ".join(rule_params_list)
+
+    return rule_params
 
 rule generate_mcds:
     """
@@ -108,9 +128,8 @@ rule generate_mcds:
     input:
         mapping_summaries=get_mapping_summaries, # need this to ensure that mapping rule is run first
         allc_files=get_allc_files,
-        chrom_sizes=config['chrom_sizes'],
-        regions_promoter=config['regions_promoter'],
-        regions_gene=config['regions_gene'],
+        chrom_sizes_and_regions=get_generate_mcdc_input
+        # chrom_sizes=config['chrom_sizes'],
     output:
         allc_table="results/generate_mcds/allc.table",
         allc_mcds="results/generate_mcds/allc.mcds"
@@ -121,6 +140,7 @@ rule generate_mcds:
     params:
         allc_files_comma_sep=lambda wildcards, input: ','.join(input.allc_files),
         outdir=lambda wildcards, output: os.path.dirname(output.allc_table),
+        regions=get_generate_mcdc_params
     threads: 64
     resources:
         mem_gb=480,
@@ -137,16 +157,12 @@ rule generate_mcds:
         allcools generate-dataset  \
         --allc_table {output.allc_table} \
         --output_path {params.outdir} \
-        --chrom_size_path  {input.chrom_sizes} \
+        --chrom_size_path  {input.chrom_sizes_and_regions[0]} \
         --obs_dim cell \
         --cpu {threads} \
         --chunk_size 50 \
-        --regions chrom100k 100000 \
-        --regions chrom5k 5000 \
-        --regions promoter {input.regions_promoter} \
-        --regions gene {input.regions_gene} \
-        --quantifiers chrom100k count CGN,CHN \
-        --quantifiers chrom5k hypo-score CGN cutoff=0.9
+        {params.regions}
         }} 1> {log[0]} 2> {log[1]}
+        
         """
 

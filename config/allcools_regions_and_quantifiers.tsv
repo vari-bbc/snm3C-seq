@@ -1,0 +1,3 @@
+region_name	regions	quantifiers
+chrom100	100000	count CGN,CHN
+chrom5k	5000	hypo-score CGN cutoff=0.9

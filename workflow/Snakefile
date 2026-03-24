@@ -17,7 +17,6 @@ units = pd.read_table(config["units"], dtype={"fq1" : str, "fq2" : str})
 if not (units['fq1'].is_unique and units['fq2'].is_unique):
     raise Exception('Same fastq specified in more than one row.')
 
-
 all_units_fastqs = units['fq1'].tolist() + units['fq2'].tolist()
 all_raw_data_fastqs = [os.path.basename(fn) for fn in glob.glob('raw_data/*.fastq.gz')]
 
@@ -27,8 +26,10 @@ if any(fq not in all_units_fastqs for fq in all_raw_data_fastqs):
 if any(fq not in all_raw_data_fastqs for fq in all_units_fastqs):
     raise Exception("There are fastqs in config/samplesheet/units.tsv that are not in raw_data/.")
 
-
 units['fq_pref'] = units['fq1'].str.replace('_R1_001.fastq.gz', '')
+
+# regions and quantifier settings for allcools prepare_dataset
+prepare_dataset_config = pd.read_table(config["allcools_regions_and_quantifiers_tsv"], dtype={"region_name" : str, "regions" : str, "quantifiers" : str})
 
 snakemake_dir = os.getcwd() + "/"
 

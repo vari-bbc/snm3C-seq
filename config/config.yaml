@@ -1,5 +1,4 @@
 units: "config/samplesheet/units.tsv"
 yap_config: "mapping_config_m3c_mm10_stampede_hisat3.ini"
 chrom_sizes: "/varidata/researchtemp/collab/wang_lab/ref/with_chrl/hisat-3n-dna-repeat/mm10_with_chrl.chrom.sizes"
-regions_promoter: "/varidata/researchtemp/collab/wang_lab/ref/hg38/gencode-v30/gencode.v30.tss.slop2k.bed"
-regions_gene: "/varidata/researchtemp/collab/wang_lab/ref/hg38/gencode-v30/gencode.v30.annotation.gene.sorted.bed.gz"
+allcools_regions_and_quantifiers_tsv: "config/allcools_regions_and_quantifiers.tsv"
