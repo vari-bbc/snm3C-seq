@@ -1,7 +1,7 @@
 executor: cluster-generic
 cluster-generic-submit-cmd: "mkdir -p logs/{rule}; sbatch \
 --export=ALL \
--p bbc,long,short,bigmem \
+-p long,short \
 --nodes 1 \
 --ntasks-per-node {threads} \
 --mem={resources.mem_gb}G \
