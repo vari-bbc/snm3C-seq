@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+import os
+import glob
+from shutil import which
+from snakemake.utils import validate, min_version
+import itertools
+
+##### set minimum snakemake version #####
+min_version("7.25.0")
+
+##### load config and sample sheets #####
+
+configfile: "config/config.yaml"
+
+units = pd.read_table(config["units"], dtype={"sample" : str, "fq1" : str, "fq2" : str})
+if not (units['fq1'].is_unique and units['fq2'].is_unique):
+    raise Exception('Same fastq specified in more than one row.')
+
+if not (units['sample'].is_unique):
+    raise Exception('Same sample ID specified in more than one row.')
+
+all_units_fastqs = units['fq1'].tolist() + units['fq2'].tolist()
+all_raw_data_fastqs = [os.path.basename(fn) for fn in glob.glob('raw_data/*.fastq.gz')]
+
+if any(fq not in all_units_fastqs for fq in all_raw_data_fastqs):
+    raise Exception("There are fastqs in raw_data/ that are not listed in config/samplesheet/units.tsv.")
+
+if any(fq not in all_raw_data_fastqs for fq in all_units_fastqs):
+    raise Exception("There are fastqs in config/samplesheet/units.tsv that are not in raw_data/.")
+
+
+units['fq_pref'] = units['fq1'].str.replace('_R1_001.fastq.gz', '')
+
+snakemake_dir = os.getcwd() + "/"
+
+# make a tmp directory for analyses
+tmp_dir = os.path.join(snakemake_dir, "tmp")
+if not os.path.exists(tmp_dir):
+    os.mkdir(tmp_dir)
+
+
+
+rule all:
+    input:
+        #get_mapping_summaries
+        "results/generate_mcds/allc.mcds"
+
+include:
+    'rules/yap.smk'

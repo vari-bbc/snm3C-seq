@@ -1,0 +1,24 @@
+executor: cluster-generic
+cluster-generic-submit-cmd: "mkdir -p logs/{rule}; sbatch \
+--export=ALL \
+-p bbc,long,short,bigmem \
+--nodes 1 \
+--ntasks-per-node {threads} \
+--mem={resources.mem_gb}G \
+-t 120:00:00 \
+-o logs/slurm/{rule}/{resources.log_prefix}.o \
+-e logs/slurm/{rule}/{resources.log_prefix}.e"
+jobs: 50
+max-jobs-per-timespan: "2/1s"
+latency-wait: 20
+printshellcmds: True
+
+# - Job will fail if conda is enabled but is not installed.
+# - If using conda, install snakemake using conda, don't use env module snakemake
+# - More than one SDM can be turned on at a time by using a list, such as ["env-modules","apptainer"].
+# In practice, Snakemake seems to like it better when only one sdm is chosen if you have rules with more than one sdm directive (envmodules:, conda:, container:).
+# In particular, turning on either conda or env-modules together with singularity will cause Snakemake to try to run the module or the conda env within the container. 
+# See https://github.com/snakemake/snakemake/issues/3202
+software-deployment-method: "conda" #"env-modules" #["env-modules","apptainer","conda"]
+apptainer-args: "--cleanenv"
+singularity-args: "--cleanenv"
