@@ -9,7 +9,7 @@ import configparser
 
 
 ##### set minimum snakemake version #####
-min_version("7.25.0")
+min_version("9.17.2")
 
 ##### load config and sample sheets #####
 
