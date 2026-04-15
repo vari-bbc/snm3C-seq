@@ -15,6 +15,8 @@ This is a workflow for process snm3C-seq data using [Yet Another Pipeline](https
 2. Move your sequencing reads to `raw_data/`. 
 
 3. Modify the config and samplesheet:
+  * config/config.yaml - This file defines the locations of required configuration files.
+  * <yap_config> - The path to this file is defined in `config/config.yaml`. This is the config file for [YAP](https://hq-1.gitbook.io/mc/prepare/prepare-mapping-config).
   * config/samplesheet/units.tsv
     * **fq1**           - name of read1 fastq
     * **fq2**           - name of read2 fastq
