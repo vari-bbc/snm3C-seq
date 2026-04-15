@@ -5,6 +5,8 @@ import glob
 from shutil import which
 from snakemake.utils import validate, min_version
 import itertools
+import configparser
+
 
 ##### set minimum snakemake version #####
 min_version("7.25.0")
@@ -12,6 +14,12 @@ min_version("7.25.0")
 ##### load config and sample sheets #####
 
 configfile: "config/config.yaml"
+
+yap_config = configparser.ConfigParser()
+yap_config.read(config['yap_config'])
+
+config['chrom_sizes'] = yap_config['contact']['chrom_size_path']
+
 
 units = pd.read_table(config["units"], dtype={"fq1" : str, "fq2" : str})
 if not (units['fq1'].is_unique and units['fq2'].is_unique):
